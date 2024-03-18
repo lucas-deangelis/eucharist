@@ -1,4 +1,4 @@
-module github.com/lucas-deangelis/eucharist
+module github.com/lucas-deangelis/ticker-printer
 
 go 1.21.3
 

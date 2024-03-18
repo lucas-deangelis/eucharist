@@ -47,6 +47,7 @@ func (p *printers) Add(s string, period int) {
 
 // Stop a printer if it exists for this string.
 func (p *printers) Stop(s string) {
+	fmt.Printf("Stopping %s\n", s)
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
@@ -88,7 +89,7 @@ func runPrinter(s string, n int, ch chan struct{}, color string) {
 		case <-ticker.C:
 			printWithTime(s, color)
 		case <-ch:
-			return
+			break
 		}
 	}
 }
@@ -122,6 +123,8 @@ func main() {
 			// If there's a "stop" at true, it means a "stop" button was clicked,
 			// and thus we should try to stop a printer.
 			stop := r.FormValue("stop")
+			fmt.Printf("stop: %s\n", stop)
+			fmt.Printf("item: %s\n", r.FormValue("item"))
 			if stop == "true" {
 				item := r.FormValue("item")
 				if item != "" {
@@ -185,7 +188,7 @@ var formTemplate = template.Must(template.New("form").Parse(`
 			<tr>
 				<td>{{.Name}}</td>
 				<td>{{.Period}}</td>
-				<td><button hx-post="/" hx-vals='{"item": "{{.}}", "stop": true}' hx-target="#results">Stop</button></td>
+				<td><button hx-post="/" hx-vals='{"item": "{{.Name}}", "stop": true}' hx-target="#results">Stop</button></td>
 			</tr>
 		{{end}}
 		</table>
@@ -209,7 +212,7 @@ var printersTemplate = template.Must(template.New("numbers").Parse(`
 <tr>
 	<td>{{.Name}}</td>
 	<td>{{.Period}}</td>
-	<td><button hx-post="/" hx-vals='{"item": "{{.}}", "stop": true}' hx-target="#results">Stop</button></td>
+	<td><button hx-post="/" hx-vals='{"item": "{{.Name}}", "stop": true}' hx-target="#results">Stop</button></td>
 </tr>
 {{end}}
 </table>
