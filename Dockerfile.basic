@@ -2,6 +2,6 @@ FROM golang:1.22.1-bookworm
 
 COPY . .
 
-RUN go buil
+RUN go build
 
 CMD ["./ticker-printer"]

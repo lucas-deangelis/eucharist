@@ -8,7 +8,8 @@
     let
 
       # to work with older version of flakes
-      lastModifiedDate = self.lastModifiedDate or self.lastModified or "19700101";
+      # lastModifiedDate = self.lastModifiedDate or self.lastModified or "20240318";
+      lastModifiedDate = "20240318";
 
       # Generate a user-friendly version number.
       version = builtins.substring 0 8 lastModifiedDate;
@@ -24,7 +25,6 @@
 
     in
     {
-
       # Provide some binary packages for selected system types.
       packages = forAllSystems (system:
         let
@@ -46,9 +46,9 @@
               # it should be "out-of-band" with other tooling (eg. gomod2nix).
               # To begin with it is recommended to set this, but one must
               # remember to bump this hash when your dependencies change.
-              #vendorSha256 = pkgs.lib.fakeSha256;
-
+              # vendorSha256 = pkgs.lib.fakeSha256;
               vendorSha256 = "sha256-vYfzRcBGa/a7FhCnYo9oPQgZFFJqbTLRU2pv2nFsMSI=";
+              CGO_ENABLED = 0;
             };
 
             docker = pkgs.dockerTools.buildLayeredImage {
